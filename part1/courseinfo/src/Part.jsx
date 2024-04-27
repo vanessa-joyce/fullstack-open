@@ -1,7 +1,8 @@
-const Part = ({ part, exercises }) => {
+const Part = ({ part }) => {
+  console.log(part)
   return (
     <p>
-      {part} {exercises}
+      {part.name} {part.exercises}
     </p>
   );
 };
