@@ -13,13 +13,15 @@ const Statistics = ({good, bad, neutral, getAll, getAverage}) => {
   return (      
     <>
     <h2>statistics</h2>
-      <div>
+      <table>
+        <tbody>
         <StatisticsLine value={good} text="good" />
         <StatisticsLine value={neutral} text="neutral" />
         <StatisticsLine value={bad} text="bad" />
         <StatisticsLine value={getAll()} text="all" />
         <StatisticsLine value={getAverage()} text="average" />
-      </div>
+        </tbody>
+      </table>
     </>
   )
 }
