@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Anecdote from './Anecdote'
 
 const App = () => {
   const anecdotes = [
@@ -31,8 +32,7 @@ const App = () => {
     <>
     <div>
       <h2>Anecdote of the day</h2>
-      <div>{anecdotes[selected]}</div>
-      <div>has {votes[selected]} votes</div>
+      <Anecdote anecdote={anecdotes[selected]} votes={votes[selected] } />
       <div>
         <button onClick={voteForAnecdote}>vote</button>
         <button onClick={showRandomAnecdote}>next anecdote</button>
@@ -40,8 +40,7 @@ const App = () => {
     </div>
     <div>
       <h2>Anecdote with most votes</h2>
-        <div>{anecdotes[highestVotedAnecdoteIndex]}</div>
-        <div>has {votes[highestVotedAnecdoteIndex]} votes</div>
+        <Anecdote anecdote={anecdotes[highestVotedAnecdoteIndex]} votes={votes[highestVotedAnecdoteIndex]} />
     </div>
     </>
   )
