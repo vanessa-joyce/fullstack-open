@@ -6,6 +6,10 @@ const App = () => {
   ]) 
   const [newName, setNewName] = useState('')
 
+  const handleNameChange = (event) => {
+    setNewName(event.target.value)
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
     if (checkIfPersonExists()) {
@@ -18,18 +22,18 @@ const App = () => {
   }
 
   const checkIfPersonExists = () => {
-    return persons.find(person => person.name === newName)
+    return persons.some(person => person.name === newName)
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form>
+      <form onSubmit={addPerson}>
         <div>
-          name: <input value={newName} onChange={(event) => {setNewName(event.target.value)}} />
+          name: <input value={newName} onChange={handleNameChange} />
         </div>
         <div>
-          <button type="submit" onClick={(event) => addPerson(event)}>add</button>
+          <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
