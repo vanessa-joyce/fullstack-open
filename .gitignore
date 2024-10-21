@@ -1,0 +1,6 @@
+part1/courseinfo/node_modules
+part1/counter/node_modules
+part1/hello/node_modules
+part1/unicafe/node_modules
+**/node_modules
+.DS_Store
