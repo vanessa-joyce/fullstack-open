@@ -30,6 +30,15 @@ const App = () => {
     setFilterString(event.target.value)
   }
 
+  const handleDeleteClick = (id) => {
+    const person = persons.find(person => person.id === id)
+    if (!window.confirm(`Delete ${person.name}?`)) return
+    phonebookService.remove(id)
+    .then(() => {
+      setPersons(persons.filter(person => person.id !== id))
+    })
+  }
+
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(filterString.toLowerCase()))
   const personsToShow = filterString ? filteredPersons : persons
   
@@ -60,7 +69,7 @@ const App = () => {
       <h2>add a new</h2>
       <PersonForm handleOnSubmit={addPerson} newPerson={newPerson} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-       <Persons personsToShow={personsToShow} />
+       <Persons personsToShow={personsToShow} handleDeleteClick={handleDeleteClick} />
     </div>
   )
 }
