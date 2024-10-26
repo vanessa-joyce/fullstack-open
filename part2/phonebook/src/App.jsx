@@ -39,6 +39,13 @@ const App = () => {
     .then(() => {
       setPersons(persons.filter(person => person.id !== id))
     })
+    .catch(error => {
+      setNotification({message: `Person ${person.name} was already removed from server`, type: 'error'})
+      setTimeout(() => {
+        setNotification({message: null, type: null})
+      }, 5000)
+      setPersons(persons.filter(person => person.id !== id))
+    })
   }
 
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(filterString.toLowerCase()))
