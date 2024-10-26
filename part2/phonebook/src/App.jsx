@@ -32,6 +32,12 @@ const App = () => {
     setFilterString(event.target.value)
   }
 
+  const clearNotificationWithTimeout = () => {
+    setTimeout(() => {
+      setNotification({message: null, type: null})
+    }, 5000)
+  }
+
   const handleDeleteClick = (id) => {
     const person = persons.find(person => person.id === id)
     if (!window.confirm(`Delete ${person.name}?`)) return
@@ -41,9 +47,7 @@ const App = () => {
     })
     .catch(error => {
       setNotification({message: `Person ${person.name} was already removed from server`, type: 'error'})
-      setTimeout(() => {
-        setNotification({message: null, type: null})
-      }, 5000)
+      clearNotificationWithTimeout()
       setPersons(persons.filter(person => person.id !== id))
     })
   }
@@ -67,9 +71,7 @@ const App = () => {
     phonebookService.create(newPerson)
       .then(returnedPerson => {
         setNotification({message: `Added ${newPerson.name}`, type: 'success'})
-        setTimeout(() => {
-          setNotification({message: null, type: null})
-        }, 5000)
+        clearNotificationWithTimeout()
         setPersons(persons.concat(returnedPerson))
         setNewPerson({name: '', number: ''})
 
