@@ -1,87 +1,45 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import Result from './Result'
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCountry, setSelectedCountry] = useState(null)
+  const [filteredCountries, setFilteredCountries] = useState([])
   const [countryData, setCountryData] = useState(null)
   const [countries, setCountries] = useState(null)
-  const [result, setResult] = useState(null)
+  const baseUrl = 'https://studies.cs.helsinki.fi/restcountries/api'
 
   useEffect(() => {
-    console.log('effect run, loading countries')
-    console.log('fetching countries')
     axios.
-      get(`https://studies.cs.helsinki.fi/restcountries/api/all`)
-      .then(response => {
-        setCountries(response.data.map(country => country.name.common))
-      })
+      get(`${baseUrl}/all`)
+      .then(response => setCountries(response.data.map(country => country.name.common)))
   }, [])
 
   useEffect(() => {
-    // skip if currency is not defined
-    console.log('effect')
     if (searchTerm) {
-      const filteredCountries = countries.filter(country => country.toLowerCase().includes(searchTerm.toLowerCase()))
-      console.log(filteredCountries, 'filteredCountries')
-      showFilteredCountries(filteredCountries)
-      if (filteredCountries.length === 1) {
-        setSelectedCountry(filteredCountries[0].toLowerCase())
-      }
+      const filtered = countries.filter(country => country.toLowerCase().includes(searchTerm.toLowerCase()))
+      setFilteredCountries(filtered)
     }
-      /*
-      console.log('fetching exchange rates...')
-      axios
-        .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${country}`)
-        .then(response => {
-          setRates(response.data.rates)
-        })
-    }*/
-
   }, [searchTerm])
 
   useEffect(() => {
-    if (selectedCountry) {
-    console.log('fetching country data...')
-    axios
-      .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${selectedCountry}`)
-      .then(response => {
-        setCountryData(response.data)
-      })
-
+    if (filteredCountries.length === 1) {
+      axios
+        .get(`${baseUrl}/name/${filteredCountries[0].toLowerCase()}`)
+        .then(response => setCountryData(response.data))
     }
-  }, [selectedCountry])
-
-  const showFilteredCountries = (filteredCountries) => {
-    console.log(filteredCountries)
-    if (filteredCountries.length > 10) {
-      setResult('Too many matches, specify another filter')
-    } else
-    if (filteredCountries.length < 10 && filteredCountries.length >= 1) {
-      setResult(filteredCountries)
-    }
-  }
+  }, [filteredCountries])
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value)
   }
 
-  const onSearch = (event) => {
-    event.preventDefault()
-    //setCurrency(value)
-  }
-
   return (
     <div>
-      <form onSubmit={onSearch}>
+      <form>
         country: <input value={searchTerm} onChange={handleChange} />
-        <div>{result}</div>
-        <div>{countryData?.name?.common}</div>
-        <div>{countryData?.capital?.[0]}</div>
+        <Result filteredCountries={filteredCountries} countryData={countryData} />
       </form>
-      <pre>
-
-      </pre>
     </div>
   )
 }
