@@ -34,11 +34,20 @@ const App = () => {
     setSearchTerm(event.target.value)
   }
 
+  const handleShowClick = (country) => {
+    console.log(country)
+    //setSearchTerm()
+  }
+
+  const handleOnSubmit = (event) => {
+    event.preventDefault()
+  }
+
   return (
     <div>
-      <form>
+      <form onSubmit={handleOnSubmit}>
         country: <input value={searchTerm} onChange={handleChange} />
-        <Result filteredCountries={filteredCountries} countryData={countryData} />
+        <Result filteredCountries={filteredCountries} countryData={countryData} handleShowClick={handleShowClick} />
       </form>
     </div>
   )
