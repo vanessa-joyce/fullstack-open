@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Result from './Result'
+const OPEN_WEATHER_API_KEY = import.meta.env.VITE_OPEN_WEATHER_API_KEY
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -24,11 +25,16 @@ const App = () => {
 
   useEffect(() => {
     if (filteredCountries.length === 1) {
-      axios
-        .get(`${baseUrl}/name/${filteredCountries[0].toLowerCase()}`)
-        .then(response => setCountryData(response.data))
+      loadCountryData()
+      .then(countryData => setCountryData(countryData))
     }
   }, [filteredCountries])
+
+  const loadCountryData = () => {
+    return axios
+    .get(`${baseUrl}/name/${filteredCountries[0].toLowerCase()}`)
+    .then(response => response.data)
+  }
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value)
