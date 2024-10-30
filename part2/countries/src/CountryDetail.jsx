@@ -1,6 +1,7 @@
-const CountryDetail = ({country}) => {
+import WeatherOverview from "./WeatherOverview"
+
+const CountryDetail = ({country, currentWeather}) => {
     if (!country) return
-    console.log(country)
     return (
         <div>
             <h1>{country.name.common}</h1>
@@ -11,6 +12,7 @@ const CountryDetail = ({country}) => {
                 {Object.values(country.languages).map(language => <li key={language}>{language}</li>)}
             </ul>
             <img src={country.flags.png} width={200} />
+            <WeatherOverview weather={currentWeather} />
         </div>
     )
 }

@@ -7,6 +7,7 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredCountries, setFilteredCountries] = useState([])
   const [countryData, setCountryData] = useState(null)
+  const [currentWeather, setCurrentWeather] = useState(null)
   const [countries, setCountries] = useState(null)
   const baseUrl = 'https://studies.cs.helsinki.fi/restcountries/api'
 
@@ -26,13 +27,23 @@ const App = () => {
   useEffect(() => {
     if (filteredCountries.length === 1) {
       loadCountryData()
-      .then(countryData => setCountryData(countryData))
+      .then(countryData => {
+        setCountryData(countryData)
+        loadCountryWeather(countryData.capital)
+        .then(currentWeather => setCurrentWeather(currentWeather))
+      })
     }
   }, [filteredCountries])
 
   const loadCountryData = () => {
     return axios
     .get(`${baseUrl}/name/${filteredCountries[0].toLowerCase()}`)
+    .then(response => response.data)
+  }
+
+  const loadCountryWeather = (capital) => {
+    return axios
+    .get(`https://api.openweathermap.org/data/2.5/weather?q=${capital}&units=metric&appid=${OPEN_WEATHER_API_KEY}`)
     .then(response => response.data)
   }
 
@@ -52,7 +63,7 @@ const App = () => {
     <div>
       <form onSubmit={handleOnSubmit}>
         country: <input value={searchTerm} onChange={handleChange} />
-        <Result filteredCountries={filteredCountries} countryData={countryData} handleShowClick={handleShowClick} />
+        <Result filteredCountries={filteredCountries} countryData={countryData} currentWeather={currentWeather} handleShowClick={handleShowClick}/>
       </form>
     </div>
   )

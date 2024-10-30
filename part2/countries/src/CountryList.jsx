@@ -1,5 +1,4 @@
 const CountryList = ({countries, handleShowClick}) => {
-    console.log(countries)
     if (!countries) return 
     return (
         <div>
