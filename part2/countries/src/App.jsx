@@ -35,8 +35,7 @@ const App = () => {
   }
 
   const handleShowClick = (country) => {
-    console.log(country)
-    //setSearchTerm()
+    setSearchTerm(country)
   }
 
   const handleOnSubmit = (event) => {
