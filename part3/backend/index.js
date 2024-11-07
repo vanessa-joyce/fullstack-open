@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 
 app.use(express.json())
+app.use(express.static('dist'))
 
 let notes = [
   {
@@ -60,6 +61,17 @@ app.post('/api/notes', (request, response) => {
 
   notes = notes.concat(note)
   response.json(note)
+})
+
+app.put('/api/notes/:id', (request, response) => {
+  const id = request.params.id
+  const updatedNote = request.body
+  //const note = notes.find(note => note.id === id)
+  notes = notes.map((note) => 
+    note.id === id ? {...note, ...updatedNote} : note
+  )
+
+  response.json(updatedNote)
 })
 
 app.delete('/api/notes/:id', (request, response) => {
