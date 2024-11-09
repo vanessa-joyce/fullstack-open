@@ -1,26 +1,31 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 
 app.use(express.json())
 app.use(express.static('dist'))
 
-let notes = [
-  {
-    id: "1",
-    content: "HTML is easy",
-    important: true
-  },
-  {
-    id: "2",
-    content: "Browser can execute only JavaScript",
-    important: false
-  },
-  {
-    id: "3",
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true
+const mongoose = require('mongoose')
+
+const url = process.env.MONGODB_URI;
+
+mongoose.set('strictQuery',false)
+mongoose.connect(url)
+
+const noteSchema = new mongoose.Schema({
+  content: String,
+  important: Boolean,
+})
+
+noteSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
   }
-]
+})
+
+const Note = mongoose.model('Note', noteSchema)
 
 const generateId = () => {
   const maxId = notes.length > 0
@@ -33,7 +38,10 @@ app.get('/', (request, response) => {
 })
   
 app.get('/api/notes', (request, response) => {
-  response.json(notes)
+  Note.find({}).then(notes => {
+    console.log(notes, 'notes')
+    response.json(notes)
+  })
 })
 
 app.get('/api/notes/:id', (request, response) => {
