@@ -74,7 +74,10 @@ const App = () => {
         clearNotificationWithTimeout()
         setPersons(persons.concat(returnedPerson))
         setNewPerson({name: '', number: ''})
-
+      })
+      .catch(error => {
+        setNotification({message: error.response.data.error, type: 'error'})
+        clearNotificationWithTimeout()
       })
   }
 
