@@ -14,7 +14,7 @@ const App = () => {
 
   useEffect(() => {
     axios
-    .get('http://localhost:3001/api/persons')
+    .get('/api/persons')
     .then(response => {
       setPersons(response.data)
     })
@@ -46,7 +46,7 @@ const App = () => {
       setPersons(persons.filter(person => person.id !== id))
     })
     .catch(error => {
-      setNotification({message: `Person ${person.name} was already removed from server`, type: 'error'})
+      setNotification({message: error.response.data.error, type: 'error'})
       clearNotificationWithTimeout()
       setPersons(persons.filter(person => person.id !== id))
     })
@@ -64,6 +64,10 @@ const App = () => {
       phonebookService.update(existingPerson.id, newPerson)
       .then(returnedPerson => {
         setPersons(persons.map(person => person.id === existingPerson.id ? returnedPerson : person))
+      })
+      .catch(error => {
+        setNotification({message: error.response.data.error, type: 'error'})
+        clearNotificationWithTimeout()
       })
       return
     }
