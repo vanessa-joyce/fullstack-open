@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+	"title": "Vanessas Blog",
+	"author": "Vanessa Sutter",
+    "url": "https://www.test.ch",
+    "likes": 0
+}
