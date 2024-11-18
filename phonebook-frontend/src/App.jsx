@@ -7,25 +7,25 @@ import phonebookService from './services/phonebook'
 import Notification from './components/Notification'
 
 const App = () => {
-  const [persons, setPersons] = useState([]) 
-  const [newPerson, setNewPerson] = useState({name: '', number: ''})
+  const [persons, setPersons] = useState([])
+  const [newPerson, setNewPerson] = useState({ name: '', number: '' })
   const [filterString, setFilterString] = useState('')
-  const [notification, setNotification] = useState({message: null, type: null})
+  const [notification, setNotification] = useState({ message: null, type: null })
 
   useEffect(() => {
     axios
-    .get('/api/persons')
-    .then(response => {
-      setPersons(response.data)
-    })
+      .get('/api/persons')
+      .then(response => {
+        setPersons(response.data)
+      })
   }, [])
 
   const handleNameChange = (event) => {
-    setNewPerson({...newPerson, name: event.target.value})
+    setNewPerson({ ...newPerson, name: event.target.value })
   }
 
   const handleNumberChange = (event) => {
-    setNewPerson({...newPerson, number: event.target.value})
+    setNewPerson({ ...newPerson, number: event.target.value })
   }
 
   const handleFilterChange = (event) => {
@@ -34,7 +34,7 @@ const App = () => {
 
   const clearNotificationWithTimeout = () => {
     setTimeout(() => {
-      setNotification({message: null, type: null})
+      setNotification({ message: null, type: null })
     }, 5000)
   }
 
@@ -42,19 +42,19 @@ const App = () => {
     const person = persons.find(person => person.id === id)
     if (!window.confirm(`Delete ${person.name}?`)) return
     phonebookService.remove(id)
-    .then(() => {
-      setPersons(persons.filter(person => person.id !== id))
-    })
-    .catch(error => {
-      setNotification({message: error.response.data.error, type: 'error'})
-      clearNotificationWithTimeout()
-      setPersons(persons.filter(person => person.id !== id))
-    })
+      .then(() => {
+        setPersons(persons.filter(person => person.id !== id))
+      })
+      .catch(error => {
+        setNotification({ message: error.response.data.error, type: 'error' })
+        clearNotificationWithTimeout()
+        setPersons(persons.filter(person => person.id !== id))
+      })
   }
 
   const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(filterString.toLowerCase()))
   const personsToShow = filterString ? filteredPersons : persons
-  
+
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -62,25 +62,25 @@ const App = () => {
     if (existingPerson) {
       if (!window.confirm(`${existingPerson.name} is already added to phonebook, replace the old number with a new one?`)) return
       phonebookService.update(existingPerson.id, newPerson)
-      .then(returnedPerson => {
-        setPersons(persons.map(person => person.id === existingPerson.id ? returnedPerson : person))
-      })
-      .catch(error => {
-        setNotification({message: error.response.data.error, type: 'error'})
-        clearNotificationWithTimeout()
-      })
+        .then(returnedPerson => {
+          setPersons(persons.map(person => person.id === existingPerson.id ? returnedPerson : person))
+        })
+        .catch(error => {
+          setNotification({ message: error.response.data.error, type: 'error' })
+          clearNotificationWithTimeout()
+        })
       return
     }
 
     phonebookService.create(newPerson)
       .then(returnedPerson => {
-        setNotification({message: `Added ${newPerson.name}`, type: 'success'})
+        setNotification({ message: `Added ${newPerson.name}`, type: 'success' })
         clearNotificationWithTimeout()
         setPersons(persons.concat(returnedPerson))
-        setNewPerson({name: '', number: ''})
+        setNewPerson({ name: '', number: '' })
       })
       .catch(error => {
-        setNotification({message: error.response.data.error, type: 'error'})
+        setNotification({ message: error.response.data.error, type: 'error' })
         clearNotificationWithTimeout()
       })
   }
@@ -97,7 +97,7 @@ const App = () => {
       <h2>add a new</h2>
       <PersonForm handleOnSubmit={addPerson} newPerson={newPerson} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-       <Persons personsToShow={personsToShow} handleDeleteClick={handleDeleteClick} />
+      <Persons personsToShow={personsToShow} handleDeleteClick={handleDeleteClick} />
     </div>
   )
 }
