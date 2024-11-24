@@ -15,7 +15,7 @@ const favoriteBlog = (blogs) => {
   )
 }
 
-const mostBlogs = (blogs) => {
+const getAuthorList = (blogs) => {
   if (!blogs || blogs.length === 0) return null
   const authorList = []
   blogs.map(blog => {
@@ -23,16 +23,30 @@ const mostBlogs = (blogs) => {
 
     if (authorListIndex >= 0) {
       authorList[authorListIndex].blogs += 1
+      authorList[authorListIndex].likes += blog.likes
       return
     }
 
     authorList.push({
       author: blog.author,
-      blogs: 1
+      blogs: 1,
+      likes: blog.likes
     })
   })
 
+  return authorList
+}
+
+const mostBlogs = (blogs) => {
+  if (!blogs || blogs.length === 0) return null
+  const authorList = getAuthorList(blogs)
   return authorList.reduce((max, author) => author.blogs > max.blogs ? author : max)
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs }
+const mostLikes = (blogs) => {
+  if (!blogs || blogs.length === 0) return null
+  const authorList = getAuthorList(blogs)
+  return authorList.reduce((max, author) => author.likes > max.likes ? author : max)
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes }
