@@ -15,4 +15,24 @@ const favoriteBlog = (blogs) => {
   )
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog }
+const mostBlogs = (blogs) => {
+  if (!blogs || blogs.length === 0) return null
+  const authorList = []
+  blogs.map(blog => {
+    const authorListIndex = authorList.findIndex((author) => author.author === blog.author)
+
+    if (authorListIndex >= 0) {
+      authorList[authorListIndex].blogs += 1
+      return
+    }
+
+    authorList.push({
+      author: blog.author,
+      blogs: 1
+    })
+  })
+
+  return authorList.reduce((max, author) => author.blogs > max.blogs ? author : max)
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs }
