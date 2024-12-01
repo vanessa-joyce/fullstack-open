@@ -429,4 +429,11 @@ describe('api', () => {
       .send(blogWithoutUrl)
       .expect(400)
   })
+
+  test('delete a blog entry', async () => {
+    const blogs = await Blog.find({})
+    console.log(blogs)
+    await api.delete(`/api/blogs/${blogs[0].id}`)
+      .expect(204)
+  })
 })
