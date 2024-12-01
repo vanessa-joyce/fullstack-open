@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "node --test",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "test": "cross-env  NODE_ENV=test node --test",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
     "logs:prod": "fly logs",
@@ -22,8 +22,10 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "mongoose": "^8.8.1"
+    "mongoose": "^8.8.1",
+    "supertest": "^7.0.0"
   }
 }

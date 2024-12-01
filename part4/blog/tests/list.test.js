@@ -1,6 +1,9 @@
 const { test, describe } = require('node:test')
+const supertest = require('supertest')
 const assert = require('node:assert')
 const listHelper = require('../utils/list_helper')
+const app = require('../app')
+const api = supertest(app)
 
 test('dummy returns one', () => {
   const blogs = []
@@ -365,4 +368,11 @@ describe('author with most likes', () => {
     assert.deepStrictEqual(result, authorWithMostLikes)
   })
 
+})
+
+describe('api', () => {
+  test('there are two blogs', async () => {
+    const response = await api.get('/api/blogs')
+    assert.strictEqual(response.body.length, 2)
+  })
 })
