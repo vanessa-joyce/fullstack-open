@@ -392,7 +392,7 @@ describe('api', () => {
   })
 
   test('new blog entry is created', async () => {
-    const blog = { author: 'Patrick Sutter', title: 'Typescript is nice', url: 'https://www.patrick-sutter.ch', likes: 10 }
+    const blog = { author: 'Patrick', title: 'Typescript is nice', url: 'https://www.patrick.ch', likes: 10 }
 
     const existingBlogs = await api.get('/api/blogs')
 
@@ -404,5 +404,16 @@ describe('api', () => {
     const updatedBlogs = await api.get('/api/blogs')
 
     assert.strictEqual(updatedBlogs.body.length, existingBlogs.body.length + 1)
+  })
+
+  test('if the likes property is missing from the request, default to the value 0', async () => {
+    const blog = { author: 'Patrick', title: 'Typescript is nice', url: 'https://www.patrick.ch' }
+
+    const savedBlog = await api.post('/api/blogs')
+      .send(blog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    assert.deepStrictEqual(savedBlog.body, { ...blog, likes: 0, id: savedBlog.body.id })
   })
 })
