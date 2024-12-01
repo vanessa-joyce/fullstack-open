@@ -3,6 +3,7 @@ const supertest = require('supertest')
 const assert = require('node:assert')
 const listHelper = require('../utils/list_helper')
 const app = require('../app')
+const { estimatedDocumentCount } = require('../models/blog')
 const api = supertest(app)
 
 test('dummy returns one', () => {
@@ -374,5 +375,13 @@ describe('api', () => {
   test('there are two blogs', async () => {
     const response = await api.get('/api/blogs')
     assert.strictEqual(response.body.length, 2)
+  })
+
+  test('unique property is named id', async () => {
+    const response = await api.get('/api/blogs')
+    const firstBlog = response.body[0]
+    console.log(firstBlog)
+    assert('id' in firstBlog)
+    assert(!('_id' in firstBlog))
   })
 })
