@@ -3,7 +3,7 @@ const supertest = require('supertest')
 const assert = require('node:assert')
 const listHelper = require('../utils/list_helper')
 const app = require('../app')
-const { estimatedDocumentCount } = require('../models/blog')
+const Blog = require('../models/blog')
 const api = supertest(app)
 
 test('dummy returns one', () => {
@@ -383,5 +383,20 @@ describe('api', () => {
     console.log(firstBlog)
     assert('id' in firstBlog)
     assert(!('_id' in firstBlog))
+  })
+
+  test('new blog entry is created', async () => {
+    const blog = { author: 'Patrick Sutter', title: 'Typescript is nice', url: 'https://www.patrick-sutter.ch', likes: 10 }
+
+    const existingBlogs = await api.get('/api/blogs')
+
+    await api.post('/api/blogs')
+      .send(blog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const updatedBlogs = await api.get('/api/blogs')
+
+    assert.strictEqual(updatedBlogs.body.length, existingBlogs.body.length + 1)
   })
 })
