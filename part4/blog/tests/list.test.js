@@ -1,10 +1,16 @@
-const { test, describe } = require('node:test')
+const { test, describe, beforeEach } = require('node:test')
 const supertest = require('supertest')
 const assert = require('node:assert')
 const listHelper = require('../utils/list_helper')
+const testHelper = require('./test_helper')
 const app = require('../app')
-const Blog = require('../models/blog')
 const api = supertest(app)
+const Blog = require('../models/blog')
+
+beforeEach(async () => {
+  await Blog.deleteMany({})
+  await Blog.insertMany(testHelper.initialBlogs)
+})
 
 test('dummy returns one', () => {
   const blogs = []
