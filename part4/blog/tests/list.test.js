@@ -416,4 +416,17 @@ describe('api', () => {
 
     assert.deepStrictEqual(savedBlog.body, { ...blog, likes: 0, id: savedBlog.body.id })
   })
+
+  test('return error if title or url properties are missing', async () => {
+    const blogWithoutTitle = { author: 'Patrick', url: 'https://www.patrick.ch', likes: 10 }
+    await api.post('/api/blogs')
+      .send(blogWithoutTitle)
+      .expect(400)
+
+
+    const blogWithoutUrl = { author: 'Patrick', title: 'Typescript is nice', likes: 10 }
+    await api.post('/api/blogs')
+      .send(blogWithoutUrl)
+      .expect(400)
+  })
 })
