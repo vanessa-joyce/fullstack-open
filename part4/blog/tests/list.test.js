@@ -386,7 +386,6 @@ describe('api', () => {
   test('unique property is named id', async () => {
     const response = await api.get('/api/blogs')
     const firstBlog = response.body[0]
-    console.log(firstBlog)
     assert('id' in firstBlog)
     assert(!('_id' in firstBlog))
   })
@@ -432,8 +431,18 @@ describe('api', () => {
 
   test('delete a blog entry', async () => {
     const blogs = await Blog.find({})
-    console.log(blogs)
     await api.delete(`/api/blogs/${blogs[0].id}`)
       .expect(204)
+  })
+
+  test('update a blog', async () => {
+    let blog = await Blog.findOne()
+    blog.likes = 100
+    const updatedBlog = await api.put(`/api/blogs/${blog.id}`)
+      .send(blog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    assert.deepStrictEqual(updatedBlog.body, blog.toJSON())
   })
 })

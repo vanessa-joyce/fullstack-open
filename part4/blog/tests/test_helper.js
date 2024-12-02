@@ -1,5 +1,3 @@
-const Blog = require('../models/blog')
-
 const initialBlogs = [
   {
     title: 'JS is not so easy',
