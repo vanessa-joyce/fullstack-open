@@ -9,10 +9,7 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id) return response.status(401).json({ error: 'token invalid' })
-
-  const user = await User.findById(decodedToken.id)
+  const user = request.user
   const blog = new Blog({ ...request.body, createdBy: user._id })
 
   const savedBlog = await blog.save()
@@ -28,9 +25,7 @@ blogsRouter.put('/:id', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  if (!decodedToken.id) return response.status(401).json({ error: 'token invalid' })
-  const user = await User.findById(decodedToken.id)
+  const user = request.user
   const blog = await Blog.findOne({ _id: request.params.id, createdBy: user._id })
   if (!blog) return response.status(400).json({ error: 'blog with this id does not exist or is not editable by user' })
   await blog.deleteOne()
