@@ -3,7 +3,7 @@ const initialBlogs = [
     title: 'JS is not so easy',
     author: 'Vanessa Sutter',
     url: 'https://www.sutter.cloud',
-    likes: 10
+    likes: 10,
   },
   {
     title: 'React patterns',

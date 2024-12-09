@@ -8,6 +8,7 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
   const user = request.user
+  if (!user) return response.status(401).end()
   const blog = new Blog({ ...request.body, createdBy: user._id })
 
   const savedBlog = await blog.save()
