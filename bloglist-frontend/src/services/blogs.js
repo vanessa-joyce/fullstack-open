@@ -1,4 +1,5 @@
 import axios from 'axios'
+import loginService from './login'
 const baseUrl = '/api/blogs'
 
 const getAll = () => {
@@ -6,4 +7,14 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
-export default { getAll }
+const create = async newBlog => {
+  console.log(loginService.getToken())
+  const config = {
+    headers: { Authorization: loginService.getToken() },
+  }
+
+  const request = await axios.post(baseUrl, newBlog, config)
+  return request.data
+}
+
+export default { getAll, create }
