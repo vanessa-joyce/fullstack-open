@@ -18,11 +18,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs([...blogs].sort((a, b) => {
-        console.log(a, 'a')
-        console.log(b, 'b')
-        return a.title.localeCompare(b.title)
-      }))
+      setBlogs(blogs)
     )  
   }, [])
 
@@ -53,7 +49,6 @@ const App = () => {
       const returnedBlog = await blogService.create(blog)
       setBlogs(blogs.concat(returnedBlog))
       setNotification({status: 'success', text: `a new blog ${blog.title} by ${blog.author} added`})
-    
       setTimeout(() => {
         setNotification(null)
       }, 5000)
@@ -75,6 +70,24 @@ const App = () => {
       const returnedBlog = await blogService.update(blog.id, blog)
       setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
     } catch (exception) {
+      setNotification({status: 'error', text: exception.message})
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+  }
+
+  const handleBlogRemoval = async (blog) => {
+    try {
+      await blogService.remove(blog.id)
+      console.log('entfernt')
+      setBlogs(blogs.filter(currentBlog => currentBlog.id !== blog.id))
+      setNotification({status: 'success', text: `Removed blog ${blog.title} by ${blog.author}`})
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    } catch (exception) {
+      console.log(exception)
       setNotification({status: 'error', text: exception.message})
       setTimeout(() => {
         setNotification(null)
@@ -140,7 +153,7 @@ const App = () => {
           {blogForm()}
           <div className="space-y-4">
             {sortedBlogs.map((blog) => (
-              <Blog key={blog.id} blog={blog} addLike={handleLike} />
+              <Blog key={blog.id} blog={blog} addLike={handleLike} removeBlog={handleBlogRemoval} />
             ))}
           </div>
         </div>

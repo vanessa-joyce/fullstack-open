@@ -1,12 +1,20 @@
 import { useState } from "react"
+import loginService from "../services/login"
 
-const Blog = ({ blog, addLike }) => {
+const Blog = ({ blog, addLike, removeBlog }) => {
   const [showDetail, setShowDetail] = useState(false)
 
+  const currentUser = loginService.getCurrentUser()
+
   const handleLikeClick = event => {
-    event.preventDefault()
     const updatedBlog = {...blog, likes: blog.likes + 1, createdBy: blog.createdBy._id}
     addLike(updatedBlog)
+  }
+
+  const handleRemoveClick = event => {
+    if (confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      removeBlog(blog)
+    }
   }
 
   return (
@@ -20,6 +28,9 @@ const Blog = ({ blog, addLike }) => {
           {blog.url}<br />
           likes {blog.likes} <button className="ml-3 py-2 px-3 text-sm rounded bg-purple-300 text-white" onClick={handleLikeClick}>like</button><br />
           {blog.createdBy?.name}
+          {currentUser.username === blog.createdBy?.username &&
+            <div><button className="py-2 px-3 text-sm rounded bg-purple-300 text-white" onClick={handleRemoveClick}>remove</button></div>
+          }
         </div>
         </>
       ) : 

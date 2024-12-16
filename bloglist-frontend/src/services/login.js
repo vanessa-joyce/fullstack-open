@@ -14,4 +14,10 @@ const login = async credentials => {
   return response.data
 }
 
-export default { login, getToken, setToken }
+const getCurrentUser = () => {
+  if (localStorage.getItem('loggedInUserBlogapp')) {
+    return JSON.parse(localStorage.getItem('loggedInUserBlogapp'))
+  }
+}
+
+export default { login, getToken, setToken, getCurrentUser }
