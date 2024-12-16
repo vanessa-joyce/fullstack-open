@@ -8,7 +8,6 @@ const getAll = () => {
 }
 
 const create = async newBlog => {
-  console.log(loginService.getToken())
   const config = {
     headers: { Authorization: loginService.getToken() },
   }
@@ -17,4 +16,13 @@ const create = async newBlog => {
   return request.data
 }
 
-export default { getAll, create }
+const update = async (id, updatedBlog) => {
+  const config = {
+    headers: { Authorization: loginService.getToken() },
+  }
+
+  const request = await axios.put(`${baseUrl}/${id}`, updatedBlog)
+  return request.data
+}
+
+export default { getAll, create, update }

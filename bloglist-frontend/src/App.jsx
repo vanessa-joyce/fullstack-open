@@ -65,6 +65,18 @@ const App = () => {
     window.localStorage.removeItem('loggedInUserBlogapp')
   }
 
+  const handleLike = async (blog) => {
+    try {
+      const returnedBlog = await blogService.update(blog.id, blog)
+      setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
+    } catch (exception) {
+      setNotification({status: 'error', text: exception.message})
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+  }
+
   const loginForm = () => (
     <form onSubmit={handleLogin} className="space-y-4">
       <div className="flex flex-col">
@@ -123,7 +135,7 @@ const App = () => {
           {blogForm()}
           <div className="space-y-4">
             {blogs.map((blog) => (
-              <Blog key={blog.id} blog={blog} />
+              <Blog key={blog.id} blog={blog} addLike={handleLike} />
             ))}
           </div>
         </div>
