@@ -14,10 +14,15 @@ const App = () => {
   const [notification, setNotification] = useState(null)
 
   const blogFormRef = useRef()
+  const sortedBlogs = [...blogs].sort((a, b) => a.title.localeCompare(b.title))
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs([...blogs].sort((a, b) => {
+        console.log(a, 'a')
+        console.log(b, 'b')
+        return a.title.localeCompare(b.title)
+      }))
     )  
   }, [])
 
@@ -134,7 +139,7 @@ const App = () => {
           </p>
           {blogForm()}
           <div className="space-y-4">
-            {blogs.map((blog) => (
+            {sortedBlogs.map((blog) => (
               <Blog key={blog.id} blog={blog} addLike={handleLike} />
             ))}
           </div>
