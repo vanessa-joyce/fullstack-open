@@ -19,7 +19,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const App = () => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const user = await loginService.login({username, password})
+      const user = await loginService.login({ username, password })
       window.localStorage.setItem('loggedInUserBlogapp', JSON.stringify(user))
       setUser(user)
       setUsername('')
@@ -48,12 +48,12 @@ const App = () => {
     try {
       const returnedBlog = await blogService.create(blog)
       setBlogs(blogs.concat(returnedBlog))
-      setNotification({status: 'success', text: `a new blog ${blog.title} by ${blog.author} added`})
+      setNotification({ status: 'success', text: `a new blog ${blog.title} by ${blog.author} added` })
       setTimeout(() => {
         setNotification(null)
       }, 5000)
     } catch (exception) {
-      setNotification({status: 'error', text: exception.message})
+      setNotification({ status: 'error', text: exception.message })
       setTimeout(() => {
         setNotification(null)
       }, 5000)
@@ -70,7 +70,7 @@ const App = () => {
       const returnedBlog = await blogService.update(blog.id, blog)
       setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
     } catch (exception) {
-      setNotification({status: 'error', text: exception.message})
+      setNotification({ status: 'error', text: exception.message })
       setTimeout(() => {
         setNotification(null)
       }, 5000)
@@ -82,13 +82,13 @@ const App = () => {
       await blogService.remove(blog.id)
       console.log('entfernt')
       setBlogs(blogs.filter(currentBlog => currentBlog.id !== blog.id))
-      setNotification({status: 'success', text: `Removed blog ${blog.title} by ${blog.author}`})
+      setNotification({ status: 'success', text: `Removed blog ${blog.title} by ${blog.author}` })
       setTimeout(() => {
         setNotification(null)
       }, 5000)
     } catch (exception) {
       console.log(exception)
-      setNotification({status: 'error', text: exception.message})
+      setNotification({ status: 'error', text: exception.message })
       setTimeout(() => {
         setNotification(null)
       }, 5000)
@@ -124,14 +124,14 @@ const App = () => {
         Login
       </button>
     </form>
-  );
-  
+  )
+
   const blogForm = () => (
     <Togglable buttonLabel="new blog" ref={blogFormRef}>
       <BlogForm createBlog={handleBlogCreation} />
     </Togglable>
   )
-  
+
   return (
     <div className="p-6 max-w-2xl mx-auto space-y-6">
       <h2 className="text-2xl font-bold text-gray-800">Blogs</h2>
@@ -141,7 +141,7 @@ const App = () => {
       ) : (
         <div className="space-y-6">
           <p className="text-gray-700">
-            {user.name} logged in{" "}
+            {user.name} logged in{' '}
             <button
               type="submit"
               onClick={handleLogout}
@@ -159,7 +159,7 @@ const App = () => {
         </div>
       )}
     </div>
-  ) 
+  )
 }
 
 export default App
