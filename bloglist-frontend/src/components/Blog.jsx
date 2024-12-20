@@ -25,7 +25,7 @@ const Blog = ({ blog, addLike, removeBlog }) => {
         {blog.title} - {blog.author}
         {showDetail === true ? (
           <>
-            <button className="ml-3 py-2 px-3 text-sm rounded bg-purple-300 text-white" onClick={() => setShowDetail(false)}>hide</button>
+            <button className="hide-details ml-3 py-2 px-3 text-sm rounded bg-purple-300 text-white" onClick={() => setShowDetail(false)}>hide</button>
             <div>
               {blog.url}<br />
           likes {blog.likes} <button className="ml-3 py-2 px-3 text-sm rounded bg-purple-300 text-white" onClick={handleLikeClick}>like</button><br />
@@ -36,7 +36,7 @@ const Blog = ({ blog, addLike, removeBlog }) => {
             </div>
           </>
         ) :
-          <button className="ml-3 py-2 px-3 text-sm rounded bg-purple-300 text-white" onClick={() => setShowDetail(true)}>show</button>
+          <button className="show-details ml-3 py-2 px-3 text-sm rounded bg-purple-300 text-white" onClick={() => setShowDetail(true)}>show</button>
         }
       </div>
     </div>
