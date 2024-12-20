@@ -4,8 +4,10 @@ import Blog from './Blog'
 
 describe('Display blog', () => {
   let container
-  const addLike = vi.fn()
-  const removeBlog = vi.fn()
+  const mockHandlers = {
+    addLike: null,
+    removeBlog: null
+  }
 
   const blog = {
     title: "Neues Leben 2.0",
@@ -20,9 +22,12 @@ describe('Display blog', () => {
     id: "67605aef48f43ca52c26b584"
   }
 
+
   beforeEach(() => {
+    mockHandlers.addLike = vi.fn()
+    mockHandlers.removeBlog = vi.fn()
     container = render(
-      <Blog blog={blog} addLike={addLike} removeBlog={removeBlog} />
+      <Blog blog={blog} addLike={mockHandlers.addLike} removeBlog={mockHandlers.removeBlog} />
     ).container
   })
 
@@ -36,17 +41,28 @@ describe('Display blog', () => {
     expect(likes).toBeNull()
   })
 
-  test('with details after the details button was clicked', () => {
+  test('with details after the details button was clicked', async () => {
     const user = userEvent.setup()
-    const showDetailsButton = container.querySelector('.show-details')
+    const showDetailsButton = container.querySelector('.show-details-btn')
 
-    user.click(showDetailsButton)
-    
+    await user.click(showDetailsButton)
+
     const url = screen.findByText('https://www.google.ch')
     expect(url).toBeDefined()
     const likes = screen.findByText('6 likes')
     expect(likes).toBeDefined()
   })
 
-})
+  test('with a working like button',async () => {
+    const user = userEvent.setup()
+    const showDetailsButton = container.querySelector('.show-details-btn')
+    await user.click(showDetailsButton)
 
+    const likeButton = container.querySelector('.like-btn')
+
+    await user.click(likeButton)
+    await user.click(likeButton)
+
+    expect(mockHandlers.addLike.mock.calls).toHaveLength(2)
+  })
+})
