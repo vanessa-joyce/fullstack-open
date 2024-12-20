@@ -22,6 +22,7 @@ const BlogForm = ({ createBlog }) => {
       <div className="flex flex-col">
         <label className="mb-1 text-gray-700 font-medium">Title</label>
         <input
+          data-testid="title"
           type="text"
           value={title}
           name="Title"
@@ -32,6 +33,7 @@ const BlogForm = ({ createBlog }) => {
       <div className="flex flex-col">
         <label className="mb-1 text-gray-700 font-medium">Author</label>
         <input
+          data-testid="author"
           type="text"
           value={author}
           name="Author"
@@ -42,6 +44,7 @@ const BlogForm = ({ createBlog }) => {
       <div className="flex flex-col">
         <label className="mb-1 text-gray-700 font-medium">URL</label>
         <input
+          data-testid="url"
           type="url"
           value={url}
           name="Url"
@@ -50,6 +53,7 @@ const BlogForm = ({ createBlog }) => {
         />
       </div>
       <button
+        data-testid="submit"
         type="submit"
         className="w-full px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
       >
