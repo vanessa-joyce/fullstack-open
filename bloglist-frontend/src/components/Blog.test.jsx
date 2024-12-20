@@ -28,9 +28,6 @@ describe('Display blog', () => {
 
 
   test('without details', () => {
-     //const showDetailsButton = Container.querySelector('.show-details')
-    //const hideDetailsButton = Container.querySelector('.hide-details')
-  
     const element = screen.findByText('Neues Leben 2.0 - Vanessa Joyce')
     expect(element).toBeDefined()
     const url = screen.queryByText('https://www.google.ch')
@@ -43,9 +40,8 @@ describe('Display blog', () => {
     const user = userEvent.setup()
     const showDetailsButton = container.querySelector('.show-details')
 
-    render(<Blog blog={blog} addLike={addLike} removeBlog={removeBlog} />)
-
     user.click(showDetailsButton)
+    
     const url = screen.findByText('https://www.google.ch')
     expect(url).toBeDefined()
     const likes = screen.findByText('6 likes')
