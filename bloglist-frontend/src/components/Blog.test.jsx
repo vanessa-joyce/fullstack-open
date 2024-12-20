@@ -1,7 +1,12 @@
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
-test('renders blog title and author', () => {
+describe('Display blog', () => {
+  let container
+  const addLike = vi.fn()
+  const removeBlog = vi.fn()
+
   const blog = {
     title: "Neues Leben 2.0",
     author: "Vanessa Joyce",
@@ -15,18 +20,37 @@ test('renders blog title and author', () => {
     id: "67605aef48f43ca52c26b584"
   }
 
-  const addLike = vi.fn()
-  const removeBlog = vi.fn()
-   //const showDetailsButton = Container.querySelector('.show-details')
-  //const hideDetailsButton = Container.querySelector('.hide-details')
+  beforeEach(() => {
+    container = render(
+      <Blog blog={blog} addLike={addLike} removeBlog={removeBlog} />
+    ).container
+  })
 
 
-  render(<Blog blog={blog} addLike={addLike} removeBlog={removeBlog} />)
+  test('without details', () => {
+     //const showDetailsButton = Container.querySelector('.show-details')
+    //const hideDetailsButton = Container.querySelector('.hide-details')
+  
+    const element = screen.findByText('Neues Leben 2.0 - Vanessa Joyce')
+    expect(element).toBeDefined()
+    const url = screen.queryByText('https://www.google.ch')
+    expect(url).toBeNull()
+    const likes = screen.queryByText('likes')
+    expect(likes).toBeNull()
+  })
 
-  const element = screen.findByText('Neues Leben 2.0 - Vanessa Joyce')
-  expect(element).toBeDefined()
-  const url = screen.queryByText('https://www.google.ch')
-  expect(url).toBeNull()
-  const likes = screen.queryByText('likes')
-  expect(likes).toBeNull()
+  test('with details after the details button was clicked', () => {
+    const user = userEvent.setup()
+    const showDetailsButton = container.querySelector('.show-details')
+
+    render(<Blog blog={blog} addLike={addLike} removeBlog={removeBlog} />)
+
+    user.click(showDetailsButton)
+    const url = screen.findByText('https://www.google.ch')
+    expect(url).toBeDefined()
+    const likes = screen.findByText('6 likes')
+    expect(likes).toBeDefined()
+  })
+
 })
+
