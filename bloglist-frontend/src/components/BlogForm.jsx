@@ -53,7 +53,7 @@ const BlogForm = ({ createBlog }) => {
         />
       </div>
       <button
-        data-testid="submit"
+        data-testid="submit-blog"
         type="submit"
         className="w-full px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300"
       >

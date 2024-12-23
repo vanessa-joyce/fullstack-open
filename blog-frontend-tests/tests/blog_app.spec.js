@@ -45,6 +45,18 @@ describe('Blog app', () => {
       await expect(page.getByText('a new blog My new blog by Vanessa added')).toBeVisible()
     })
 
-    //await page.getByRole('button', { name: 'like' }).click();
+    describe('When a blog exists', () => {
+      beforeEach(async ({ page }) => {
+        await createBlog(page, 'My second blog', 'Vanessa', 'https://www.vanessa2.com')
+      })
+      test('a blog can be liked', async ({page}) => {
+        await page.getByRole('button', { name: 'show' }).click();
+        const likeSpan = page.getByTestId('likes')
+        const initialLikes = await likeSpan.textContent()
+        const initialLikeCount = parseInt(initialLikes);
+        await page.getByRole('button', { name: 'like' }).click();
+        await expect(likeSpan).toHaveText((initialLikeCount + 1).toString());
+      })
+    })
   })
 })

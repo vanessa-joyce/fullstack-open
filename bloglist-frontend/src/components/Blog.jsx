@@ -28,7 +28,7 @@ const Blog = ({ blog, addLike, removeBlog }) => {
             <button className="hide-details-btn ml-3 py-2 px-3 text-sm rounded bg-purple-300 text-white" onClick={() => setShowDetail(false)}>hide</button>
             <div>
               {blog.url}<br />
-          likes {blog.likes} <button className="like-btn ml-3 py-2 px-3 text-sm rounded bg-purple-300 text-white" onClick={handleLikeClick}>like</button><br />
+              likes <span data-testid="likes">{blog.likes}</span> <button className="like-btn ml-3 py-2 px-3 text-sm rounded bg-purple-300 text-white" onClick={handleLikeClick}>like</button><br />
               {blog.createdBy?.name}
               {currentUser?.username === blog.createdBy?.username &&
             <div><button className="py-2 px-3 text-sm rounded bg-purple-300 text-white" onClick={handleRemoveClick}>remove</button></div>
