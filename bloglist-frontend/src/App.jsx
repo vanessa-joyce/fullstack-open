@@ -100,6 +100,7 @@ const App = () => {
       <div className="flex flex-col">
         <label className="mb-1 text-gray-700 font-medium">Username</label>
         <input
+          data-testid="username"
           type="text"
           value={username}
           name="Username"
@@ -110,6 +111,7 @@ const App = () => {
       <div className="flex flex-col">
         <label className="mb-1 text-gray-700 font-medium">Password</label>
         <input
+          data-testid="password"
           type="password"
           value={password}
           name="Password"
@@ -118,6 +120,7 @@ const App = () => {
         />
       </div>
       <button
+        data-testid="login"
         type="submit"
         className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
       >
