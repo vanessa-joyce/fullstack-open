@@ -30,6 +30,7 @@ const Blog = ({ blog, addLike, removeBlog }) => {
               {blog.url}<br />
               likes <span data-testid="likes">{blog.likes}</span> <button className="like-btn ml-3 py-2 px-3 text-sm rounded bg-purple-300 text-white" onClick={handleLikeClick}>like</button><br />
               {blog.createdBy?.name}
+              username : {currentUser.username} created by : {blog.createdBy?.username}
               {currentUser?.username === blog.createdBy?.username &&
             <div><button className="py-2 px-3 text-sm rounded bg-purple-300 text-white" onClick={handleRemoveClick}>remove</button></div>
               }

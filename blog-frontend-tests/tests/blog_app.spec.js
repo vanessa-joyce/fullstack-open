@@ -12,6 +12,7 @@ describe('Blog app', () => {
       }
     })
     await page.goto('http://localhost:5173')
+    await page.pause()
   })
 
   test('Login form is shown', async ({ page }) => {
@@ -47,7 +48,8 @@ describe('Blog app', () => {
 
     describe('When a blog exists', () => {
       beforeEach(async ({ page }) => {
-        await createBlog(page, 'My second blog', 'Vanessa', 'https://www.vanessa2.com')
+        await createBlog(page, 'My second blog', 'Vanessa', 'https://www.vanessa.com')
+        await expect(page.getByText('a new blog My second blog by Vanessa added')).toBeVisible()
       })
       test('a blog can be liked', async ({page}) => {
         await page.getByRole('button', { name: 'show' }).click();
@@ -56,6 +58,18 @@ describe('Blog app', () => {
         const initialLikeCount = parseInt(initialLikes);
         await page.getByRole('button', { name: 'like' }).click();
         await expect(likeSpan).toHaveText((initialLikeCount + 1).toString());
+      })
+
+      test('a blog can be deleted by the creator', async ({page}) => {
+        await page.once('dialog', async (dialog) => {
+          // Sicherstellen, dass es der erwartete Dialog ist:
+          expect(dialog.type()).toBe('confirm')
+          await dialog.accept()
+        })
+        await page.getByRole('button', { name: 'show' }).click();
+        await page.getByRole('button', { name: 'remove' }).click();
+        await expect(page.getByText('Removed blog My second blog by Vanessa')).toBeVisible()
+        //await page.getByRole('button').click();
       })
     })
   })
