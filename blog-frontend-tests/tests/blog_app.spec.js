@@ -71,6 +71,31 @@ describe('Blog app', () => {
         await expect(page.getByText('Removed blog My second blog by Vanessa')).toBeVisible()
         //await page.getByRole('button').click();
       })
+
+      test('the delete button is shown to the creator', async ({page}) => {
+        await page.getByRole('button', { name: 'show' }).click();
+        await expect(page.getByRole('button', { name: 'remove' })).toBeVisible()
+      })
+
+      describe('When a different user logged in', () => {
+        beforeEach(async ({ page, request }) => {
+          await request.post('/api/users', {
+            data: {
+              name: 'Max Mustermann',
+              username: 'mmustermann',
+              password: '5678'
+            }
+          });
+        })
+        test('the delete button is not shown', async ({page}) => {
+          await page.getByRole('button', { name: 'logout' }).click();
+          await loginWith(page, 'mmustermann', '5678')
+
+          await page.getByRole('button', { name: 'show' }).click();
+          await expect(page.getByRole('button', { name: 'remove' })).not.toBeVisible()
+        })
+      })
     })
   })
+
 })
