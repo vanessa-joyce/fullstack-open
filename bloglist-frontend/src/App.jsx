@@ -14,7 +14,7 @@ const App = () => {
   const [notification, setNotification] = useState(null)
 
   const blogFormRef = useRef()
-  const sortedBlogs = [...blogs].sort((a, b) => a.title.localeCompare(b.title))
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>

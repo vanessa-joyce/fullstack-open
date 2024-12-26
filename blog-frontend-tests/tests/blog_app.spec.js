@@ -51,6 +51,7 @@ describe('Blog app', () => {
         await createBlog(page, 'My second blog', 'Vanessa', 'https://www.vanessa.com')
         await expect(page.getByText('a new blog My second blog by Vanessa added')).toBeVisible()
       })
+
       test('a blog can be liked', async ({page}) => {
         await page.getByRole('button', { name: 'show' }).click();
         const likeSpan = page.getByTestId('likes')
@@ -94,6 +95,22 @@ describe('Blog app', () => {
           await page.getByRole('button', { name: 'show' }).click();
           await expect(page.getByRole('button', { name: 'remove' })).not.toBeVisible()
         })
+      })
+
+      test('the blog with the most likes is displayed at the first position', async ({page}) => {
+        await createBlog(page, 'My third blog', 'Vanessa', 'https://www.vanessa.com')
+        await createBlog(page, 'My fourth blog', 'Vanessa', 'https://www.vanessa.com')
+        await createBlog(page, 'My fifth blog', 'Vanessa', 'https://www.vanessa.com')
+        await createBlog(page, 'My sixth blog', 'Vanessa', 'https://www.vanessa.com')
+
+        page.pause()
+        const fourthBlogElement = await page.getByText('My fourth blog')
+        await fourthBlogElement
+          .getByRole('button', { name: 'show' }).click()
+        await fourthBlogElement.getByRole('button', { name: 'like' }).click();
+        await fourthBlogElement.getByRole('button', { name: 'like' }).click();
+
+        await expect(page.getByTestId('blog').first()).toHaveText(/My fourth blog/)
       })
     })
   })

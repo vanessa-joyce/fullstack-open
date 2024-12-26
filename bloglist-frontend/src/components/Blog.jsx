@@ -20,7 +20,7 @@ const Blog = ({ blog, addLike, removeBlog }) => {
   }
 
   return (
-    <div className="p-2 border border-solid border-indigo-600">
+    <div data-testid="blog" className="p-2 border border-solid border-indigo-600">
       <div>
         {blog.title} - {blog.author}
         {showDetail === true ? (
